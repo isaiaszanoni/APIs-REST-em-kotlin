@@ -1,0 +1,81 @@
+# APIs REST em Kotlin: Seus serviços prontos para o mundo real
+
+---
+
+## Capitulo 1 - O que é REST, afinal?
+
+→ Realizar a comunicação entre dois sistemas diferentes, independentemente da linguagem em que tenham sido escritos.
+E o REST é muito utilizado porque ele estabelece um conjunto de padrões que permite que essa comunicação seja eficiente e interoperável
+
+→Microsserviços - Um aplicativo único, tal como uma suíte de pequenos serviços, cada um executando o seu próprio processo e se comunicando através de mecanismos leves, muitas vezes em uma API com recursos HTTP.
+
+---
+
+> **Dependências deste Capitulo:**
+>
+> - Spring Web
+> - Spring JPA
+> - Driver do H2
+
+---
+
+## 1.2 Listagem de Novos Motoristas
+
+Criar uma camada de acesso a um banco de dados e uma classe que representará os motoristas.
+
+- Criação do pacote `domain` e dentro dele o `Entities.kt`. É neste arquivo que ficará nossa data class `Driver`.
+- Precisamos modificar essa classe para refletir o estado da nossa base de dados. Utilizamos a anotação `@Entity`.
+- Para que o sistema reconheça o campo `id` como pk da tabela, utilizaremos a anotação `@Id`.
+
+**DAO - Acessar a base de dados.** 
+Com o Spring JPA fazemos isso criando uma interface e fazendo com que ela estenda a interface `JpaRepository`.
+Em sua declaração, utilizaremos a classe Driver, e utilizaremos a PK `Id`, do tipo Long.
+
+- Arquivo `Repositories.kt` dentro do package `domain`. Dentro do arquivo, teremos o repositório `DriverRepository`, que extende a JpaRepository.
+
+---
+
+### Banco de Dados
+
+O H2 é um banco de dados em memória. Muito útil para validar algum código em forma de teste. 
+Inicia junto com o projeto e pode ser administrado pelo **Sprint Boot DevTools**.
+
+- http://localhost:8080/h2-console/
+- Copiamos a URL para o campo JDBC URL
+
+---
+
+**Interfaces**
+
+Vamos criar o pacote `interfaces` contendo a classe `DriverAPI`, que vai conter o método `listDrivers`, que retorna uma List com os objetos do tipo Driver.
+
+```kotlin
+package com.cap01.car.interfaces
+
+import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RestController
+
+@Service
+@RestController
+class DriverAPI {
+
+    @GetMapping
+    fun listDrivers() : List<Driver> = emptyList()
+}
+```
+
+---
+
+**Retorno, JSON, Payload...**
+
+Payloads em JSON são menores do que em XML, que utilizam muitas tags e pesa em redes limitadas, como as redes móveis.
+
+Para informar à nossa API que queremos utilizar JSON, utilizamos a anotação `@RequestMapping` junto do parâmetro `produces`. Este parâmetro recebe uma lista de Strings como dados, mas as strings aceitas estão populadas como constantes na classe MediaType do Spring. Para utilizar o JSON, devemos utilizar o valor aplicado `APPLICATION_JSON_VALUE`.
+
+
+
+Por fim, é preciso informar ao Spring qual será a URL do recurso. 
+
+----
+
