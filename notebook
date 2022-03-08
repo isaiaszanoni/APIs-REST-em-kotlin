@@ -165,6 +165,8 @@ Isso nos garante uma segurança quando não podemos receber a resposta.
 
 ## 2.7 Atualizando os Dados Enviados com PUT e PATCH
 
+**Put**
+
 ###### Tarefa
 
 - [ ] Recriar esta lógica
@@ -176,4 +178,20 @@ Lógica
 
 - Vamos chamar o método findDrive porque caso o driver não exista, já teremos o retorno 404 implementado.
 - Vamos criar uma cópia do motorista encontrado com o método `copy()`, e passar os dados como parâmetro para essa cópia. 
-- Save do repositório e tá pronto o sorvetinho.
+- Save do repositório e tá pronto o sorvetinho. 
+
+----
+
+**Patch**
+
+- Outra classe que possa receber dados ou não
+
+- ```kotlin
+  data class PatchDriver(
+  val name: String?,
+  val birthDate: LocalDate?
+  )
+  ```
+
+- A implementação é semelhante à do PUT, mas vamos utilizar o Elvis Operator, uma instrução do Kotlin que indica que, caso o que esteja à esquerda do operador seja nulo, deve ser utilizado o que está à direita.
+- 

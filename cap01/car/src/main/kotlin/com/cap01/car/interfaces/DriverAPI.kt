@@ -2,10 +2,12 @@ package com.cap01.car.interfaces
 
 import com.cap01.car.domain.Driver
 import com.cap01.car.domain.DriverRepository
+import com.cap01.car.domain.PatchDriver
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -41,4 +43,15 @@ class DriverAPI (
         )
         return driverRepository.save(copyDriver)
     }
+
+    @PatchMapping("/drivers/{id}")
+    fun incrementalUpdateDriver(@PathVariable("id") id: Long, @RequestBody driver: PatchDriver) : Driver {
+        val foundDriver = findDriver(id)
+        val copyDriver = foundDriver.copy(
+            birthDate = driver.birthDate ?: foundDriver.birthDate,
+            name = driver.name ?: foundDriver.name
+        )
+        return driverRepository.save(copyDriver)
+    }
 }
+
