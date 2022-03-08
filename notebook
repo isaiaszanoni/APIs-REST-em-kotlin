@@ -145,3 +145,35 @@ Podemos observar que também existe `;q=0.8`. O ponto vírgula serve para separa
 - application/signed-exchange
 - application/xml
 - */*
+
+---
+
+**Generated Value** - O nosso ID ficaria muito melhor com auto increment. Basta utilizar a anotação `@GeneratedValue` em cima do atributo e zas!
+
+---
+
+## 2.6 Idempotência: Os efeitos de invocações Sucessivas
+
+Clicando em Send várias vezes, o Id é incrementado. Um novo recurso é criado ao lado do servidor. 
+Suponha que você realiza o envio mas quando o servidor está enviando a resposta, por algum motivo, a conexão criada é perdida. Dessa forma, você não consegue receber o resultado da invocação e não sabe se a requisição teve sucesso ou não. E aí? Reenviar a requisição ou não?
+
+Uma propriedade do método HTTP é a **idempotência**, que trata dos efeitos causados por essas sucessivas invocações ao servidor. Dizemos que existe uma idempotência quando o efeito da enésima requisição é igual ao da primeira. Em outras palavras, não importa quantas vezes enviamos uma requisição, nenhuma alteração sobre o estado do servidor será produzida, além daquela feita pela primeira vez.
+
+Isso nos garante uma segurança quando não podemos receber a resposta. 
+
+---
+
+## 2.7 Atualizando os Dados Enviados com PUT e PATCH
+
+###### Tarefa
+
+- [ ] Recriar esta lógica
+
+- id no PathVariable
+- RequestBody precisa ser chamado para podermos passar os atributos pelo JSON.
+
+Lógica
+
+- Vamos chamar o método findDrive porque caso o driver não exista, já teremos o retorno 404 implementado.
+- Vamos criar uma cópia do motorista encontrado com o método `copy()`, e passar os dados como parâmetro para essa cópia. 
+- Save do repositório e tá pronto o sorvetinho.
