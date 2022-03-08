@@ -91,9 +91,57 @@ O ID será passado pelo **path parameter**, na URL do recurso.
 - O retorno é um Optional. Para retornar o Driver presente no Optional, utilizamos o método `.get()`.
 
 ```kotlin
-
+// ...
+ @GetMapping("drivers/{id}")
+    fun findDriver(@PathVariable("id") id: Long) =
+        driverRepository.findById(id).get()
+// ...
 ```
 
 ## 2.2  Tratamento de erro
 
-- Precisamos tratar erros no método que criamos
+- Precisamos tratar erros no método que criamos com `orElseThrow()`. Ele vai receber como parâmetro uma função lâmbda que retorna uma exceção que será lançada. 
+  Vamos utilizar o `ResponseStatusException` que recebe um dos valores presentes no enum `HttpStatus`.
+
+```kotlin
+// ...
+@GetMapping("drivers/{id}")
+    fun findDriver(@PathVariable("id") id: Long) =
+        driverRepository.findById(id)
+            .orElseThrow { ResponseStatusException(HttpStatus.NOT_FOUND) }
+
+// ...
+```
+
+---
+
+## 2.4 Negociação de Conteúdo
+
+O Postman conta com um **Headers**. Em temporary headers temos os cabeçalhos enviados para o servidor no momento da requisição para o nosso serviço. O cabeçalho *Accept*, em *Key* é um "pedido" para o servidor enviar o tipo de informação que está destacada no valor. Por default vem com `*/*`, que significa que o cliente aceita literalmente qualquer coisa. Pode ser uma imagem, HTML, PDF, XML, JSON etc.
+
+Na versão do navegador google chrome do livro, o autor destaca que o padrão para o headers é o seguinte:
+
+```
+text/html,application/xhtml+xml,application/xml;q=0.9,
+image/webp,image/apng,*/*;q=0.8,application/signed-exchange/v=b3.
+```
+
+HTML.
+
+Esses valores são chamados de MIME Types, ou, alternativamente, Media Types. 
+
+Esttutura dos Media Types: `<tipo>/<subtipo>`. O tipo é como se fosse a familia (texto, imagem, application (binário apresentado como texto estruturado - JSON)),
+
+A respeito do `*/*`, o asterisco é utilizado como um curinga nos media types. Se for uma API que serve imagens, podemos passar `media type image/*`. Quando o curinga está dos dois lados, significa que ele recebe "qualquer coisa".
+
+Podemos observar que também existe `;q=0.8`. O ponto vírgula serve para separar, e o `q` é um parâmetro. Os números vão de 0.1 até 1.0, e significam:
+
+ 
+
+- text/html
+- application/xhtml+xml
+- image/webp
+- image/apng
+- application/signed-exchange
+- application/xml
+- */*
