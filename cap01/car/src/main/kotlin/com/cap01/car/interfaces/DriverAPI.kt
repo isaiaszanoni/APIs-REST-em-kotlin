@@ -6,6 +6,7 @@ import com.cap01.car.domain.PatchDriver
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -53,5 +54,9 @@ class DriverAPI (
         )
         return driverRepository.save(copyDriver)
     }
+
+    @DeleteMapping("/drivers/{id}")
+    fun deleteDriver(@PathVariable("id") id: Long) =
+        driverRepository.delete(findDriver(id))
 }
 
