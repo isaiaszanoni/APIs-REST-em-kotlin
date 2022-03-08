@@ -79,3 +79,21 @@ Por fim, é preciso informar ao Spring qual será a URL do recurso.
 
 ----
 
+## Cap02 - Expandindo o nosso serviço Inicial
+
+## 2.1 Driver By ID
+
+Vamos utilizar o ID para pegar os dados de um motorista específico.
+
+O ID será passado pelo **path parameter**, na URL do recurso.
+
+- `findById` do repositorio
+- O retorno é um Optional. Para retornar o Driver presente no Optional, utilizamos o método `.get()`.
+
+```kotlin
+
+```
+
+## 2.2  Tratamento de erro
+
+- Precisamos tratar erros no método que criamos
