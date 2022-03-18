@@ -193,7 +193,7 @@ Lógica
   )
   ```
 
-- A implementação é semelhante à do PUT, mas vamos utilizar o Elvis Operator, uma instrução do Kotlin que indica que, caso o que esteja à esquerda do operador seja nulo, deve ser utilizado o que está à direita.
+- A implementação é semelhante à do PUT, mas vamos utilizar o **Elvis Operator**, uma instrução do Kotlin que indica que, caso o que esteja à esquerda do operador seja nulo, deve ser utilizado o que está à direita.
 
 ---
 
@@ -206,6 +206,31 @@ Outra polêmica é em relação à idempotência. O método delete é idempotent
 ---
 
 ## Delete Lógico
+
+---
+
+## API de Passageiros
+
+---
+
+## API de Solicitação de Viagens
+
+É importante nos atentarmos ao recurso que precisamos desenvolver. Esta é uma API de **Solicitações** de viagens. Ao ser aceita a solicitação, o segundo recurso é iniciado, o de **Viagem** em si.
+
+Em REST, URLs podem ser representadas como conjuntos e cada trecho (separado por /) pode ser interpretado como um subconjunto do conjunto principal.
+
+No nosso contexto, é um erro considerar que uma viagem dependa de uma solicitação. Isso implica que toda Viagem precisa de um id de solicitação.
+Se modelarmos `/solicitacoes/viagens`, vamos acabar considerando que todas as viagens pertencem de uma vez só a todas as solicitações de viagens.
+
+Então precisamos analisar como será o recurso de solicitação de viagens. Precisamos:
+
+- De passageiro;
+- De local de origem;
+- De local de destino.
+
+```kotlin
+
+```
 
 
 
