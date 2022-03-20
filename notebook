@@ -211,5 +211,120 @@ Outra polêmica é em relação à idempotência. O método delete é idempotent
 
 ## 3.2 Solicitações de Viagens
 
+Esta API requer uma atenção especial. Não trata-se de uma simples requisição que insere ou recuperar dados em uma base, mas uma API que toma uma ação.
 
+É importante pensar no melhor recurso a lidar.
+Não estamos modelando a API de viagens, mas a de Solicitação de viagem. Quando a solicitação for aceita, entra a **viagem** propriamente dita. 
+
+As URLs REST são hierárquicas. As da direita são subconjuntos das à esquerda. 
+
+No nosso caso particular, não podemos considerar que existe relação entre as solicitações de viagens e as viagens.
+
+- `solicitações/viagens` → Considera-se que viagens pertencem de uma vez só a todas as solicitações de viagens, o que é um erro.
+- `/solicitações/{id}/viagens` → Sempre vamos precisar do ID da solicitação para criar uma viagem, o que prejudica a usabilidade da API.
+- `/viagens/solicitações` → Parecido com o primeiro caso. Não.
+- `/viagens/{id}/solicitações` → não será possível criar uma solicitação sem antes ter uma viagem. Erro semântico.
+
+Para criar uma solicitação nós precisamos:
+
+- Local de Origem,
+- Local de Destino
+- Passageiro.
+
+Criamos Repository, API e o data class de TravelRequest. 
+
+Nossa API está assim por enquanto: 
+
+```kotlin
+package com.cap01.car.interfaces
+
+// imports
+
+@Service
+@RestController
+@RequestMapping(path = ["/travelRequests"], produces = [MediaType.APPLICATION_JSON_VALUE])
+class TravelRequestAPI {
+
+    @PostMapping
+    fun makeTravelRequest(@RequestBody travelRequest: TravelRequest) {
+            
+    }
+
+
+}
+```
+
+Precisamos nos atentar a algumas regras de negócio:
+
+- Salvar as solicitações de viagens.
+- Fornecer uma API onde os motoristas interessados possam obter viagens.
+- Somente devolver para esses motoristas intreressados as viagens que geograficamente estiverem próximas deles.
+
+----
+
+Vamos criar a classe `TravelService`, que vai chamar o repositório para salvar o pedido
+
+```kotlin
+package com.cap01.car.domain
+
+import org.springframework.stereotype.Component
+
+@Component
+class TravelService(
+    val travelRequestRepository: TravelRequestRepository
+) {
+    fun saveTravelRequest(travelRequest: TravelRequest) {
+        travelRequestRepository.save(travelRequest)
+    }
+}
+```
+
+
+
+Agora podemos fazer `travelRequestAPI` ter uma referência para TravelService e salvar a solicitação de viagem:
+
+```kotlin
+@Service
+@RestController
+@RequestMapping(path = ["/travelRequests"], produces = [MediaType.APPLICATION_JSON_VALUE])
+class TravelRequestAPI (
+    val travelService: TravelService
+) {
+
+    @PostMapping
+    fun makeTravelRequest(@RequestBody travelRequest: TravelRequest) {
+        travelService.saveTravelRequest(travelRequest)
+    }
+
+}
+```
+
+
+
+Agora falta determinar o que o usuário vai receber. Vamos dar uma resposta nesse momento, mas ela será intermediária, e deve sofrer mudanças ao longo do projeto. Neste caso específico, a resposta deve vir quando o usuário aceitar a corrida, o que costuma ser comum quando há o uso de Mensageria e Requisições Assíncronas.
+
+Este caso custuma retornar o código HTTP 202 - Accepted. Ele nos obriga a retornar um cabeçalho `Location`, que o cliente pode usar para consultar o resultado definitivo da requisição. 
+
+Aqui vamos utilizar o Design Pattern `Data Trasfer Object`. Ele consiste na criação de objetos que servisão como intermediários na transmissão de dados.
+Nós vamos criar as classes que farão a representação da entrada de dados da nossa API e também da saída. 
+Vamos renomear a classe de entrada de `TravelRequestInput`:
+
+```kotlin
+
+```
+
+Problema da Vez: travelService não é compatível com travelRequestInput. Precisamos fazer o mapeamento das entidades na mesma camada.
+Nós vamos criar uma classe chamada TravelRequestMapper. Essa classe vai definir um metodo que faça o mapeamento do TravelRequestInput para um objeto do tipo TravelRequest, inclusive procurando pelo passageiro e lançando um código 404 caso não encontre.
+
+```kotlin
+
+```
+
+- Enum com Status da corrida
+  - Atributo Status para guardar este status
+- dataTime para guardar o momento da solicitação
+
+---
+
+## Inserindo Links: Primeiro Uso de HEATEOAS
 

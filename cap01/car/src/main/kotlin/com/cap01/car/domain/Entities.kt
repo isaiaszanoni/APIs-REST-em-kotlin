@@ -1,6 +1,9 @@
 package com.cap01.car.domain
 
+import com.cap01.car.interfaces.TravelRequestAPI
+import org.springframework.stereotype.Component
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -15,11 +18,6 @@ data class Driver(
     val birthDate: LocalDate
 )
 
-data class PatchDriver(
-    val name: String?,
-    val birthDate: LocalDate?
-)
-
 @Entity
 data class Passenger(
     @Id
@@ -32,6 +30,11 @@ data class PatchPassenger(
     val name: String?
 )
 
+enum class TravelRequestStatus {
+    CREATED, ACCEPTED, REFUSED
+}
+
+
 @Entity
 data class TravelRequest(
     @Id
@@ -41,5 +44,8 @@ data class TravelRequest(
     @ManyToOne
     val passenger: Passenger,
     val origin: String,
-    val destination: String
+    val destination: String,
+    val status: TravelRequestStatus = TravelRequestStatus.CREATED,
+    val creationDate: LocalDateTime = LocalDateTime.now()
 )
+

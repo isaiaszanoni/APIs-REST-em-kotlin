@@ -2,7 +2,6 @@ package com.cap01.car.interfaces
 
 import com.cap01.car.domain.Driver
 import com.cap01.car.domain.DriverRepository
-import com.cap01.car.domain.PatchDriver
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
+import java.time.LocalDate
 
 @Service
 @RestController
@@ -23,6 +23,11 @@ import org.springframework.web.server.ResponseStatusException
 class DriverAPI (
     val driverRepository: DriverRepository
 ) {
+    data class PatchDriver(
+        val name: String?,
+        val birthDate: LocalDate?
+    )
+
     @GetMapping("/drivers")
     fun listDrivers() = driverRepository.findAll()
 
