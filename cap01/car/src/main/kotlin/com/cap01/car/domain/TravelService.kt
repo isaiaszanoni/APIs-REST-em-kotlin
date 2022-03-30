@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 class TravelService(
     val travelRequestRepository: TravelRequestRepository
 ) {
-    fun saveTravelRequest(travelRequest: TravelRequest) {
+
+    fun saveTravelRequest(travelRequest: TravelRequest) =
         travelRequestRepository.save(travelRequest)
-    }
 }

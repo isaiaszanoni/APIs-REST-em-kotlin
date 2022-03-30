@@ -328,3 +328,45 @@ Nós vamos criar uma classe chamada TravelRequestMapper. Essa classe vai definir
 
 ## Inserindo Links: Primeiro Uso de HEATEOAS
 
+→ Saída da nossa API.
+
+- Copiar os atributos da TravelRequest, tirando as anotações e os valores que são populados automaticamente.
+
+```kotlin
+data class TravelRequestOutput(
+        val id: Long,
+        val passenger: Passenger, // Ops
+        val origin: String,
+        val destination: String,
+        val status: TravelRequestStatus,
+        val creationDate: LocalDateTime
+
+    )
+```
+
+A classe passenger é tratada como uma API separada. Se utilizarmos a classe TravelRequestOutput, o passageiro como um todo será refeernciado na resposta, algo que não desejamos aqui. Por isso utilizamos o Heteoas.
+
+**Hypermedia As The Engine Os Application State**. REST deve utilizar links para relacionar recursos conectados entre si. 
+
+Quando precisamos demonstrar uma relação, que não necessariamente um objeto pertence a outro, devemos utilizar links.
+
+- Spring HETEOAS
+- `implementation("org.springframework.hateoas:spring-hateoas")`
+
+A classe `TravelRequestOutput` agora vai ter uma referência ao Spring HETEOAS.
+
+**Link HETEOAS**
+
+Agora, precisamos alterar a classe de API. Para isso, temos que
+realizar o seguinte:
+1. Primeiro, temos que alterar o tipo de retorno (para retornar
+o EntityModel ).
+2. Depois, temos que modificar o método para construir um
+TravelRequestOutput (através do método map ).
+3. Construir um
+EntityModel
+(através do método
+buildOutputModel ).
+
+---
+
