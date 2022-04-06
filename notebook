@@ -370,3 +370,19 @@ buildOutputModel ).
 
 ---
 
+## Criando Clientes REST
+
+#### Cap 04
+
+Vamos criar a API que aceita solicitaçoes de viagens e construir um cliente para a API do Google Maps para que o motorista receba somente solicitações de viagens próximas a ele.
+
+
+
+
+
+
+
+
+
+..
+
