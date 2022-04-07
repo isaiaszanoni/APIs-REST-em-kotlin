@@ -3,7 +3,6 @@ package com.cap01.car.interfaces.incoming.mapping
 import com.cap01.car.domain.PassengerRepository
 import com.cap01.car.domain.TravelRequest
 import com.cap01.car.interfaces.PassengerAPI
-import com.cap01.car.interfaces.TravelRequestAPI
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
 import org.springframework.web.server.ResponseStatusException

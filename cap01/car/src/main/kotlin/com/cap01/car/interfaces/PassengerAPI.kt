@@ -2,7 +2,6 @@ package com.cap01.car.interfaces
 
 import com.cap01.car.domain.Passenger
 import com.cap01.car.domain.PassengerRepository
-import com.cap01.car.domain.PatchPassenger
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
@@ -44,7 +43,8 @@ class PassengerAPI (
 
     @PatchMapping("/{id}")
     fun incrementalUpdatePassenger(@PathVariable("id") id: Long,
-        @RequestBody passenger: PatchPassenger): Passenger {
+        @RequestBody passenger: PatchPassenger
+    ): Passenger {
 
         val foundPassenger = findPassenger(id)
         val newPassenger = foundPassenger.copy(
@@ -57,3 +57,7 @@ class PassengerAPI (
     fun deletePassenger(@PathVariable("id") id: Long) =
         passengerRepository.delete(findPassenger(id))
 }
+
+data class PatchPassenger(
+    val name: String?
+)

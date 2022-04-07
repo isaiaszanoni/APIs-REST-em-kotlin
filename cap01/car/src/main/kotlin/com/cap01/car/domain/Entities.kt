@@ -1,7 +1,5 @@
 package com.cap01.car.domain
 
-import com.cap01.car.interfaces.TravelRequestAPI
-import org.springframework.stereotype.Component
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.persistence.Entity
@@ -26,14 +24,9 @@ data class Passenger(
     val name: String
 )
 
-data class PatchPassenger(
-    val name: String?
-)
-
 enum class TravelRequestStatus {
     CREATED, ACCEPTED, REFUSED
 }
-
 
 @Entity
 data class TravelRequest(
@@ -48,4 +41,3 @@ data class TravelRequest(
     val status: TravelRequestStatus = TravelRequestStatus.CREATED,
     val creationDate: LocalDateTime = LocalDateTime.now()
 )
-

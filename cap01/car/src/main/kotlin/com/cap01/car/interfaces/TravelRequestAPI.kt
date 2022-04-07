@@ -1,6 +1,5 @@
 package com.cap01.car.interfaces
 
-import com.cap01.car.domain.TravelRequest
 import com.cap01.car.domain.TravelRequestStatus
 import com.cap01.car.domain.TravelService
 import com.cap01.car.interfaces.incoming.mapping.TravelRequestMapper
@@ -42,5 +41,4 @@ data class TravelRequestOutput(
     val destination: String,
     val status: TravelRequestStatus,
     val creationDate: LocalDateTime
-
 )
